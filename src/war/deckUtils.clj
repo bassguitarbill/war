@@ -1,4 +1,11 @@
 
+;; 
+(def spadeChar \u2660)
+(def clubChar \u2663)
+(def heartChar \u2665)
+(def diamondChar \u2666)
+(def suitToCharMap {"spade" spadeChar "club" clubChar "heart" heartChar "diamond" diamondChar})
+
 (def suitMap {:suit ["club" "diamond" "heart" "spade"]})
 (def valueMap {:value [2 3 4 5 6 7 8 9 10 \J \Q \K \A]})
 (def standardDeckParamMap [suitMap valueMap])
@@ -50,9 +57,24 @@
   (generateDeckFromPermutations standardDeckParamMap)
 )
 
+(defn orderCardsByValue
+  [card1 card2]
+  (> (cardValue card1) (cardValue card2)))
 
+(def cardValueMap {2 2 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10 10 \J 11 \Q 12 \K 13 \A 14})
 
+(defn cardValue
+  [{:keys [value]}]
+  (get cardValueMap value)
+)
 
+(defn printCards
+  [deck]
+  (map #(println (str (:value %1) " of " (:suit %1) "s")) deck))
+
+(defn shortPrintCards
+  [cards]
+  (map #(println (str (:value %1) (get suitToCharMap (:suit %1)))) cards))
 
 (require '[clojure.test :as test])
 (test/testing "Deck info"
